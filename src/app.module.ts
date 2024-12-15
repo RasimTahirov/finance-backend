@@ -5,11 +5,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RegisterModule } from './register/register.module';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
     RegisterModule,
     AuthModule,
+    CategoryModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -24,6 +26,7 @@ import { AuthModule } from './auth/auth.module';
         database: configService.get<string>('DB_NAME'),
         password: configService.get<string>('DB_PASSWORD'),
         autoLoadEntities: true,
+        synchronize: true,
         entities: [__dirname + '/**/*.entity{.js, .ts}'],
       }),
     }),

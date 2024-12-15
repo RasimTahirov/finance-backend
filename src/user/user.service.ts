@@ -38,4 +38,8 @@ export class UserService {
 
     return { token, userSave };
   }
+
+  async findOne(email: string) {
+    return await this.userRepository.findOne({ where: { email } });
+  }
 }

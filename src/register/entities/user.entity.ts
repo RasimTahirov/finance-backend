@@ -1,4 +1,5 @@
 import { Category } from 'src/category/entities/category.entity';
+import { FinanceLogic } from 'src/finance-logic/entities/finance-logic.entity';
 import {
   Column,
   CreateDateColumn,
@@ -22,6 +23,9 @@ export class User {
     onDelete: 'CASCADE',
   })
   categories: Category[];
+
+  @OneToMany(() => FinanceLogic, (finance) => finance.user)
+  finance: FinanceLogic[];
 
   @Column({ nullable: false })
   password: string;

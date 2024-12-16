@@ -19,7 +19,10 @@ export class CategoryService {
   async create(createCategoryDto: CreateCategoryDto, id: number) {
     const { title } = createCategoryDto;
     const checkCategory = await this.categoryRepository.findOne({
-      where: { title },
+      where: {
+        title,
+        user: { id },
+      },
     });
 
     if (checkCategory) {

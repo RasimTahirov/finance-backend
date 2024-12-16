@@ -13,6 +13,7 @@ import {
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { OwnershipGuard } from './guard/category.guard';
 
 @Controller('category')
 export class CategoryController {
@@ -33,13 +34,13 @@ export class CategoryController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, OwnershipGuard)
   findOne(@Param('id') id: string) {
     return this.categoryService.findOne(+id);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, OwnershipGuard)
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);
   }

@@ -1,12 +1,14 @@
+import { Category } from 'src/category/entities/category.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity()
-export class Register {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -15,6 +17,11 @@ export class Register {
 
   @Column({ unique: true, nullable: false })
   email: string;
+
+  @OneToMany(() => Category, (category) => category.user, {
+    onDelete: 'CASCADE',
+  })
+  categories: Category[];
 
   @Column({ nullable: false })
   password: string;

@@ -2,15 +2,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateRegisterDto } from './dto/create-register.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Register } from './entities/register.entity';
+import { User } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 
 @Injectable()
 export class RegisterService {
   constructor(
-    @InjectRepository(Register)
-    private readonly userRepository: Repository<Register>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
   ) {}
 

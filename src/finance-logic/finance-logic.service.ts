@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateFinanceLogicDto } from './dto/create-finance-logic.dto';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { FinanceLogic } from './entities/finance-logic.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/category/entities/category.entity';
@@ -53,6 +53,32 @@ export class FinanceLogicService {
     const total = finance.reduce((acc, obj) => acc + obj.amount, 0);
 
     return total;
+  }
+
+  async findLastWeek(id: number) {
+    const today = new Date();
+
+    const sevenDay = new Date();
+    sevenDay.setDate(today.getDate() - 7);
+
+    try {
+      const finance = await this.financeRepository.find({
+        where: {
+          user: { id },
+          createdAt: Between(sevenDay, today),
+        },
+        order: {
+          createdAt: 'DESC',
+        },
+      });
+
+      return finance;
+    } catch (error) {
+      console.error('Ошибка при загрузке операций за последние 7 дней', error);
+      throw new InternalServerErrorException(
+        'Не удалось загрузить операции за последние 7 дней',
+      );
+    }
   }
 
   async findAll(id: number) {

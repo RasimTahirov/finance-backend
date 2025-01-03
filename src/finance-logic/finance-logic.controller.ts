@@ -32,6 +32,13 @@ export class FinanceLogicController {
     return this.financeLogicService.total(+req.user.id);
   }
 
+  @Get('last-week')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(JwtAuthGuard)
+  findSeven(@Req() req) {
+    return this.financeLogicService.findLastWeek(+req.user.id);
+  }
+
   @Get()
   @UsePipes(new ValidationPipe())
   @UseGuards(JwtAuthGuard)

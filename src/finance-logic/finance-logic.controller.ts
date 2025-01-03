@@ -22,9 +22,14 @@ export class FinanceLogicController {
   @UsePipes(new ValidationPipe())
   @UseGuards(JwtAuthGuard)
   create(@Body() createFinanceLogicDto: CreateFinanceLogicDto, @Req() req) {
-    console.log(+req.user.id);
-
     return this.financeLogicService.create(createFinanceLogicDto, +req.user.id);
+  }
+
+  @Get('total')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(JwtAuthGuard)
+  total(@Req() req) {
+    return this.financeLogicService.total(+req.user.id);
   }
 
   @Get()

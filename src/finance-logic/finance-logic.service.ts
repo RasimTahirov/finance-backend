@@ -43,6 +43,18 @@ export class FinanceLogicService {
     }
   }
 
+  async total(id: number) {
+    const finance = await this.financeRepository.find({
+      where: {
+        user: { id },
+      },
+    });
+
+    const total = finance.reduce((acc, obj) => acc + obj.amount, 0);
+
+    return total;
+  }
+
   async findAll(id: number) {
     try {
       const finance = await this.financeRepository.find({

@@ -12,7 +12,7 @@ export class CreateFinanceLogicDto {
   amount: number;
 
   @IsString()
-  type: 'Income' | 'Consumption';
+  type: 'Income' | 'Expenses';
 
   @IsNotEmpty()
   category: Category;

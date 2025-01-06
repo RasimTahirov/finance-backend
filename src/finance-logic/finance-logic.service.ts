@@ -44,15 +44,20 @@ export class FinanceLogicService {
   }
 
   async total(id: number) {
-    const finance = await this.financeRepository.find({
-      where: {
-        user: { id },
-      },
-    });
+    try {
+      const finance = await this.financeRepository.find({
+        where: {
+          user: { id },
+        },
+      });
 
-    const total = finance.reduce((acc, obj) => acc + obj.amount, 0);
+      const total = finance.reduce((acc, obj) => acc + obj.amount, 0);
 
-    return total;
+      return total;
+    } catch (error) {
+      console.error('ошибка получения общей суммы', error);
+      throw new InternalServerErrorException('Не удалось загрузть данные');
+    }
   }
 
   async findLastWeek(id: number) {
@@ -77,6 +82,58 @@ export class FinanceLogicService {
       console.error('Ошибка при загрузке операций за последние 7 дней', error);
       throw new InternalServerErrorException(
         'Не удалось загрузить операции за последние 7 дней',
+      );
+    }
+  }
+
+  async findIncomeLastMonth(id: number) {
+    const today = new Date();
+
+    const month = new Date();
+    month.setDate(today.getDate() - 30);
+
+    try {
+      const finance = await this.financeRepository.find({
+        where: {
+          user: { id },
+          createdAt: Between(month, today),
+          type: 'Поступление',
+        },
+      });
+
+      const value = finance.reduce((acc, fin) => acc + fin.amount, 0);
+
+      return { value };
+    } catch (error) {
+      console.error('Ошибка при загрузке операций за последние 30 дней', error);
+      throw new InternalServerErrorException(
+        'Не удалось загрузить операции за последние 30 дней',
+      );
+    }
+  }
+
+  async findExpensesLastMonth(id: number) {
+    const today = new Date();
+
+    const month = new Date();
+    month.setDate(today.getDate() - 30);
+
+    try {
+      const finance = await this.financeRepository.find({
+        where: {
+          user: { id },
+          createdAt: Between(month, today),
+          type: 'Расход',
+        },
+      });
+
+      const value = finance.reduce((acc, fin) => acc + fin.amount, 0);
+
+      return { value };
+    } catch (error) {
+      console.error('Ошибка при загрузке операций за последние 30 дней', error);
+      throw new InternalServerErrorException(
+        'Не удалось загрузить операции за последние 30 дней',
       );
     }
   }

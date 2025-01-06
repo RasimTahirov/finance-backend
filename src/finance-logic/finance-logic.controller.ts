@@ -39,6 +39,20 @@ export class FinanceLogicController {
     return this.financeLogicService.findLastWeek(+req.user.id);
   }
 
+  @Get('income-month')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(JwtAuthGuard)
+  findIncomeLastMonth(@Req() req) {
+    return this.financeLogicService.findIncomeLastMonth(+req.user.id);
+  }
+
+  @Get('expenses-month')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(JwtAuthGuard)
+  findExpensesLastMonth(@Req() req) {
+    return this.financeLogicService.findExpensesLastMonth(+req.user.id);
+  }
+
   @Get()
   @UsePipes(new ValidationPipe())
   @UseGuards(JwtAuthGuard)

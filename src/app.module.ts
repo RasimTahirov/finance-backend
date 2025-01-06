@@ -6,12 +6,14 @@ import { RegisterModule } from './register/register.module';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
+import { FinanceLogicModule } from './finance-logic/finance-logic.module';
 
 @Module({
   imports: [
     RegisterModule,
     AuthModule,
     CategoryModule,
+    FinanceLogicModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

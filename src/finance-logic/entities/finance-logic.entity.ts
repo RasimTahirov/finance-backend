@@ -1,33 +1,33 @@
-import { FinanceLogic } from 'src/finance-logic/entities/finance-logic.entity';
+import { Category } from 'src/category/entities/category.entity';
 import { User } from 'src/register/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class Category {
+export class FinanceLogic {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ nullable: true })
-  image: string;
 
   @Column()
   title: string;
 
-  @ManyToOne(() => User, (user) => user.categories)
-  @JoinColumn({ name: 'user_id' })
+  @Column()
+  amount: number;
+
+  @Column()
+  type: string;
+
+  @ManyToOne(() => User, (user) => user.finance)
   user: User;
 
-  @OneToMany(() => FinanceLogic, (finance) => finance.category)
-  finance: FinanceLogic[];
+  @ManyToOne(() => Category, (category) => category.finance)
+  category: Category;
 
   @CreateDateColumn()
   createdAt: Date;

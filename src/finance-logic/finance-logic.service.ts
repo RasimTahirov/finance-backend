@@ -138,18 +138,25 @@ export class FinanceLogicService {
     }
   }
 
-  async findAll(id: number) {
+  async findAll(id: number, page: number = 1, limit: number = 10) {
+    const skip = (page - 1) * limit;
+    const take = limit;
+
     try {
-      const finance = await this.financeRepository.find({
+      const [finance, total] = await this.financeRepository.findAndCount({
         where: {
           user: { id },
         },
         relations: {
           category: true,
         },
+        skip,
+        take,
       });
 
-      return finance;
+      const totalPage = Math.ceil(total / take);
+
+      return { finance, total, totalPage, currentPage: page };
     } catch (error) {
       console.error('Ошибка при загрузке операций', error);
       throw new InternalServerErrorException('Не удалось загрузить операции');

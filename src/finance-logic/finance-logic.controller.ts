@@ -9,6 +9,7 @@ import {
   ValidationPipe,
   UsePipes,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { FinanceLogicService } from './finance-logic.service';
 import { CreateFinanceLogicDto } from './dto/create-finance-logic.dto';
@@ -56,8 +57,12 @@ export class FinanceLogicController {
   @Get()
   @UsePipes(new ValidationPipe())
   @UseGuards(JwtAuthGuard)
-  findAll(@Req() req) {
-    return this.financeLogicService.findAll(+req.user.id);
+  findAll(
+    @Req() req,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.financeLogicService.findAll(+req.user.id, +page, +limit);
   }
 
   @Get(':id')

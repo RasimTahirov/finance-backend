@@ -23,7 +23,7 @@ import { FinanceLogicModule } from './finance-logic/finance-logic.module';
       useFactory: (configService: ConfigService) => ({
         type: configService.get<'postgres'>('DB_TYPE') as 'postgres',
         host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
+        port: parseInt(configService.get<string>('DB_PORT'), 10),
         username: configService.get<string>('DB_USERNAME'),
         database: configService.get<string>('DB_NAME'),
         password: configService.get<string>('DB_PASSWORD'),

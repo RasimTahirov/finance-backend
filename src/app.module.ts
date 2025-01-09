@@ -28,7 +28,6 @@ import { FinanceLogicModule } from './finance-logic/finance-logic.module';
         database: configService.get<string>('DB_NAME'),
         password: configService.get<string>('DB_PASSWORD'),
         autoLoadEntities: true,
-        synchronize: true,
         entities: [__dirname + '/**/*.entity{.js, .ts}'],
       }),
     }),

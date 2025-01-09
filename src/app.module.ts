@@ -21,14 +21,18 @@ import { FinanceLogicModule } from './finance-logic/finance-logic.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        type: configService.get<'postgres'>('DB_TYPE'),
+        type: configService.get<'postgres'>('DB_TYPE') as 'postgres',
         host: configService.get<string>('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USERNAME'),
         database: configService.get<string>('DB_NAME'),
         password: configService.get<string>('DB_PASSWORD'),
         autoLoadEntities: true,
-        entities: [__dirname + '/**/*.entity{.js, .ts}'],
+        entities: [__dirname + '/**/*.entity{.js,.ts}'],
+        ssl:
+          configService.get<string>('NODE_ENV') === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
       }),
     }),
   ],
